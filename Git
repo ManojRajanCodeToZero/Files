@@ -1,0 +1,126 @@
+------------------------------------------------------------------------------------------------
+To move file from one server to another server
+------------------------------------------------------------------------------------------------
+uklpauhar01a:/corvustrade/exposure/inbound/20190117 > 
+sftp titan_op@uklvadapp864
+titan_op@uklvadapp864's password
+sftp > cd /corvustrade
+sftp> cd exposure/inbound/20190117
+sftp> put TradeDetailsExtract%%$ODATE.csv
+Now goto corvus server
+
+-------------------------------------------------------------------------------------------------
+To kill a job
+-------------------------------------------------------------------------------------------------
+netstat -nlp |grep 9089
+kill -9 'listen_number'
+
+-------------------------------------------------------------------------------------------------
+#!/bin/bash
+
+# 01a machinebeing used for testing purpose
+  HOME=$(pwd)
+
+        #echo "$1"
+
+  # Set Application Home
+    APPLICATION_HOME=$HOME
+
+        # Set MEM_ARGS you want to pass to jvm.
+          MEM_ARGS="-Xmx20g"
+        curl 'http://uklvadapp864.uk.dev.net:7030/mtm/tradeDetails/20190117' > $1
+         #echo "Started at `date`"
+        #echo "Dos2unix Started"
+                dos2unix $1
+        #echo "Dos2Unix Completed"
+          /usr/bin/java -cp .:json-simple-1.1.1.jar JsonFileParsing $1 $2
+         # echo "Completed at `date`"
+-------------------------------------------------------------------------------------------------
+#!/bin/bash
+
+# 01a machinebeing used for testing purpose
+  HOME=$(pwd)
+
+        #echo "$1"
+
+  # Set Application Home
+    APPLICATION_HOME=$HOME
+
+        # Set MEM_ARGS you want to pass to jvm.
+          MEM_ARGS="-Xmx20g"
+				curl 'http://uklvadapp864.uk.dev.net:7030/mtm/tradeDetails/20190117' > $1
+        
+                dos2unix $1
+        
+          /usr/bin/java -cp .:json-simple-1.1.1.jar JsonFileParsing $1 $2
+                rm $1
+-------------------------------------------------------------------------------------------------
+
+$(cat $sourceFile| sed '2q;d'); - ---- to read first two lines 
+ sed -i 's/), (/),(/g' mine.dat
+ 
+ sed -i 's/Flat,\[/Flat,/g' mine.dat
+ 
+ cat mine.dat | cut -d"=" -f1 | sort -u
+ 
+ sed -i 's/<ExistingContent>/<ReplacingContent>/g' <FileName>
+Working:
+1. Open the file in vi mode
+2. :%s/<ContextNeedToReplace>/<WantToChangeto>/g
+
+
+iconv -f ISO-8859-1 -t UTF-8 test.txt -o Op.txt
+-------------------------------------------------------------------------------
+gunzip -k file.gz
+------------------------------------------------------------------------------------------------
+scp SCI_CUSTXREF_24062018.CSV titan_op@uklpautit01a:/bb/in/SCI
+---------------------------------------------------------------------------------------------------
+To Get unique records
+awk -F'|' '!seen[$2]++' filename
+------------------------------------------------------------------------------------------------
+--------------------------- TO SORT CSV File based on Columns ----------------------------------
+
+cat EXPECTED_IRCAP_SWAPTIONS_20190409.csv | sort -t ',' -k1,1 -k2,2 -k5,5 -k4,4 
+
+
+
+-------------------------------------------------------------------------------------------------
+-----------------------TO LOAD DATA TO DB USING SQLLDR-------------------------------------------
+
+LOAD DATA
+INFILE 'PFE_LIMIT_20190628.csv'
+INTO TABLE PFE_LIMIT fields terminated by ','
+(
+ID
+,COB_DATE
+,CPTY_SCIID
+,CCY
+,END_DATE
+,LIMIT_AMOUNT
+,LIMIT_TYPE
+,TENOR_AMOUNT
+,SCB_ENTITY
+,START_DATE
+,TENOR
+,TENOR_TYPE
+)
+
+
+
+
+ sqlldr CREDIT_EXPOSURES_UAT/CREDIT_EXPOSURES_UAT_123@//uklpdudasa-scan.uk.standardchartered.com:1622/CORVUS_TRADE_UAT.uk.standardchartered.com control=pfe_limit.ctl 
+ 
+
+SQLLDR Location :/harrier/TestTeamTools/SQLLDR/exposure
+
+Server: harrier01
+
+username/password@[//]host[:port][/service_name] 
+
+sqlldr CORVUS_TRADE_STORE_DEV/CORVUS_TRADE_STORE_DEV_123@//uklpdddasa-scan.uk.standardchartered.com:1622/CORVUS_TRADE_DEV.uk.standardchartered.com control=pfe_limit.ctl
+
+sqlldr CORVUS_TRADE_STORE_UAT/CORVUS_TRADE_STORE_UAT_123@//uklpdudasa-scan.uk.standardchartered.com:1622/CORVUS_TRADE_UAT.uk.standardchartered.com control=dle_limit.ctl
+sqlldr CREDIT_EXPOSURES_UAT/CREDIT_EXPOSURES_UAT_123@//uklpdudasa-scan.uk.standardchartered.com:1622/CORVUS_TRADE_UAT.uk.standardchartered.com control=dle_limit.ctl
+
+
+sqlldr CORVUS_TRADE_STORE_UAT/CORVUS_TRADE_STORE_UAT_123@//uklpdudasa-scan.uk.standardchartered.com:1622/CORVUS_TRADE_UAT.uk.standardchartered.com control=p53File.ctl
