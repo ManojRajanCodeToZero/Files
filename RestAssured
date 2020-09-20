@@ -28,3 +28,6 @@ public static String getMethodResponseWithToken(String basePath) {
 
 
 basePath : https://--/api/hierarchy/customerhierarchy?counterpartyLEID=11005254
+
+
+Exception: {"timestamp":"2020-09-20T09:39:11.252+0000","status":500,"error":"Internal Server Error","message":"Method public org.springframework.http.ResponseEntity com.scb.cri.customer.hierarchy.controller.id(java.lang.String) is not authorized. Permission Required: view, userId:xxxxxx but scoped toke is null","path":"/customerhierarchy"}
